@@ -4,12 +4,44 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>easy-im</artifactId>
-        <groupId>com.1988tianyuan</groupId>
+        <groupId>com.tianyuan</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
+    <artifactId>im-cmd-client</artifactId>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.tianyuan</groupId>
+            <artifactId>im-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>3.14.7</version>
+        </dependency>
+    </dependencies>
 
-    <artifactId>im-shell-client</artifactId>
-
-
+    <build>
+        <finalName>im-cmd-client</finalName>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>
 </project>
