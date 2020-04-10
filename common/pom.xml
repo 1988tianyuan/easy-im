@@ -7,28 +7,11 @@
         <groupId>com.tianyuan</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>im-server</artifactId>
-    
-    <dependencies>
-        <dependency>
-            <groupId>com.tianyuan</groupId>
-            <artifactId>im-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-all</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-        </dependency>
-        
-    </dependencies>
+    <artifactId>common</artifactId>
 
     <build>
-        <finalName>im-server</finalName>
+        <finalName>im-common</finalName>
         <sourceDirectory>src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -39,6 +22,5 @@
                 </includes>
             </resource>
         </resources>
-        
     </build>
 </project>
