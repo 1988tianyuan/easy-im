@@ -4,15 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.tianyuan</groupId>
-    <artifactId>easy-im</artifactId>
+    <groupId>com.tianyuan.easyim</groupId>
+    <artifactId>easy-im-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>im-common</module>
-        <module>im-server</module>
-        <module>im-gateway</module>
-        <module>im-cmd-client</module>
+        <module>common</module>
+        <module>chat-server</module>
+        <module>gateway</module>
+        <module>cmd-client</module>
     </modules>
     <properties>
         <easy-im.version>1.0-SNAPSHOT</easy-im.version>
@@ -56,8 +56,8 @@
                 <version>${jedis.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.tianyuan</groupId>
-                <artifactId>im-common</artifactId>
+                <groupId>com.tianyuan.easyim</groupId>
+                <artifactId>common</artifactId>
                 <version>${easy-im.version}</version>
             </dependency>
         </dependencies>
@@ -80,12 +80,14 @@
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
         </dependency>
+
         <!-- guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
+
         <!-- lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -98,11 +100,13 @@
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -121,8 +125,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
         </plugins>
-
     </build>
 </project>
