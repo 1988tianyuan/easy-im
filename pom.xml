@@ -15,9 +15,11 @@
         <module>cmd-client</module>
     </modules>
     <properties>
-        <easy-im.version>1.0-SNAPSHOT</easy-im.version>
         <java.version>1.8</java.version>
-        <springboot.version>2.2.2.RELEASE</springboot.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <easy-im.version>1.0-SNAPSHOT</easy-im.version>
+        <springboot.version>2.2.6.RELEASE</springboot.version>
         <lombok.version>1.18.12</lombok.version>
         <guava.version>28.0-jre</guava.version>
         <netty.version>4.1.42.Final</netty.version>
