@@ -4,7 +4,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.google.common.io.Files;
-import com.tianyuan.easyim.common.model.TokenData;
 import com.tianyuan.easyim.common.util.JsonUtil;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -15,6 +14,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Date;
 import java.util.Map;
+
+import static com.tianyuan.easyim.common.token.TokenConstant.CLAIM_DATA;
 
 public class TokenGenerator {
 
@@ -43,7 +44,7 @@ public class TokenGenerator {
         Map<String, Object> dataMap = JsonUtil.convert(data, new TypeReference<Map<String, Object>>() {});
         return JWT.create()
                 .withExpiresAt(DateUtils.addSeconds(new Date(), expireSeconds))
-                .withClaim("data", dataMap)
+                .withClaim(CLAIM_DATA, dataMap)
                 .sign(algorithm);
     }
 }

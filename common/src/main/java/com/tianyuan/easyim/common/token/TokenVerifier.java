@@ -14,6 +14,8 @@ import java.security.KeyFactory;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.X509EncodedKeySpec;
 
+import static com.tianyuan.easyim.common.token.TokenConstant.*;
+
 public class TokenVerifier {
 
     private RSAPublicKey publicKey;
@@ -41,7 +43,7 @@ public class TokenVerifier {
         JWTVerifier verifier = JWT.require(algorithm).build();
         try {
             DecodedJWT decoded = verifier.verify(token);
-            T data = decoded.getClaim("data").as(dataType);
+            T data = decoded.getClaim(CLAIM_DATA).as(dataType);
             return new Token<>(data);
         } catch (JWTVerificationException e) {
             throw new TokenVerificationException("Token verify fail", e);
