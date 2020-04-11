@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration status="WARN" monitorinterval="20">
+    <appenders>
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %c{1.} %M - %msg%n%xEx{full}"/>
+        </Console>
+    </appenders>
+
+    <loggers>
+        <root level="DEBUG">
+            <appender-ref ref="CONSOLE" level="DEBUG"/>
+        </root>
+    </loggers>
+</configuration>
