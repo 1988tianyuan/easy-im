@@ -1,0 +1,38 @@
+syntax = "proto3";
+package com.tianyuan.easyim.common.model;
+import "google/protobuf/any.proto";
+option java_package="com.tianyuan.easyim.common.model";
+option java_outer_classname = "IMMsg";
+
+message BaseRequestMsg {
+    RequestType requestType = 1;
+    google.protobuf.Any requestMsg = 2;
+}
+
+enum RequestType {
+    ChatRequest = 0;
+    CreateConnect = 1;
+    ChatResponse = 2;
+}
+
+message ChatRequestMsg {
+    string message = 1;
+    string username = 2;
+    string targetUsername = 3;
+    string sessionId = 4;
+    bool redirect = 5;
+}
+
+message ConnectCreateRequestMsg {
+    string username = 1;
+    string jwt = 2;
+}
+
+message ChatResponseMsg {
+    string message = 1;
+    string username = 2;
+    string targetUsername = 3;
+    bool redirect = 4;
+}
+
+
