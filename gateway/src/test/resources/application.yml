@@ -1,0 +1,7 @@
+server.context-path: /gateway
+
+spring:
+  profiles.active: test
+
+token:
+  key-path: classpath:/rsa/private_key.der

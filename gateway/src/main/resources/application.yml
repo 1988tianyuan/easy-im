@@ -1,0 +1,11 @@
+server.servlet.context-path: /gateway
+
+spring:
+  profiles.active: local
+
+token:
+  key-path: classpath:/rsa/private_key.der
+
+zk:
+  connect-string: localhost:2181
+  server-list-path: /easy-im/chat-servers
