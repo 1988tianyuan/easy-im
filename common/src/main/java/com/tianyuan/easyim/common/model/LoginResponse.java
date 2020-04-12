@@ -1,4 +1,4 @@
-package com.tianyuan.easyim.gateway.controller.response;
+package com.tianyuan.easyim.common.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
