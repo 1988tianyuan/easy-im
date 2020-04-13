@@ -1,4 +1,4 @@
-package com.tianyuan.easyim.server.handler;
+package com.tianyuan.easyim.chatserver.handler;
 
 import com.tianyuan.easyim.common.protocal.ChatDecoder;
 import io.netty.channel.ChannelInitializer;
