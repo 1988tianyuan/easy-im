@@ -34,7 +34,6 @@ public class CommandConsoleManager {
                 exit = exec(command, scanner);
             } catch (Exception e) {
                 log.error("Error happens when execute command:{}.", command, e);
-                exit = Thread.currentThread().isInterrupted();
             }
         }
     }
