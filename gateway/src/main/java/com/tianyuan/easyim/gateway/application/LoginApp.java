@@ -1,13 +1,14 @@
 package com.tianyuan.easyim.gateway.application;
 
+import org.springframework.stereotype.Service;
+
 import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.gateway.exception.NoServerAvailableException;
 import com.tianyuan.easyim.gateway.model.Server;
 import com.tianyuan.easyim.gateway.model.User;
-import com.tianyuan.easyim.gateway.service.server.ServerAssigner;
 import com.tianyuan.easyim.gateway.service.TokenCreator;
+import com.tianyuan.easyim.gateway.service.server.ServerAssigner;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

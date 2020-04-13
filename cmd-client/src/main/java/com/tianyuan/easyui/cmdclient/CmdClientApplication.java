@@ -1,12 +1,9 @@
 package com.tianyuan.easyui.cmdclient;
 
-import com.tianyuan.easyim.common.model.LoginResponse;
+import com.tianyuan.easyui.cmdclient.chat.ChatContext;
 import com.tianyuan.easyui.cmdclient.chat.ChatServerConnector;
-import com.tianyuan.easyui.cmdclient.login.LoginHandler;
-import io.netty.channel.Channel;
+import com.tianyuan.easyui.cmdclient.console.CommandConsoleManager;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Scanner;
 
 /**
  * @author Liu Geng liu.geng@navercorp.com
@@ -14,14 +11,23 @@ import java.util.Scanner;
  */
 @Slf4j
 public class CmdClientApplication {
+	
+	private static final ChatContext chatContext = new ChatContext();
 
-	public static void main(String[] args) throws InterruptedException {
-		System.out.println("Please login firstly, enter your username: ");
-		Scanner scanner = new Scanner(System.in);
-		String username = scanner.next();
-		LoginResponse loginResponse = LoginHandler.login(username);
-		ChatServerConnector connector = new ChatServerConnector();
-		Channel channel = connector.start(loginResponse.getServerAddress());
-		//TODO: send CreateConnectRequest to server with JWT
+	public static void main(String[] args) {
+		ChatServerConnector chatServerConnector = new ChatServerConnector();
+		chatContext.setChatServerConnector(chatServerConnector);
+		CommandConsoleManager consoleManager = new CommandConsoleManager(chatContext);
+		shutdownHook();
+		consoleManager.cmdLoop();
+	}
+	
+	private static void shutdownHook() {
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (chatContext.getChatChannel() != null && chatContext.getChatChannel().isOpen()) {
+				chatContext.getChatChannel().close();
+			}
+			chatContext.getChatServerConnector().shutdown();
+		}));
 	}
 }

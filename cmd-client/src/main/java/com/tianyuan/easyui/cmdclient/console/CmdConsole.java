@@ -1,6 +1,8 @@
 package com.tianyuan.easyui.cmdclient.console;
 
-public interface CmdConsole {
+import java.util.Scanner;
 
-    void exec(ConsoleCommand cmd);
+public interface CmdConsole {
+    
+    void exec(Scanner scanner);
 }
