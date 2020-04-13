@@ -1,12 +1,14 @@
 package com.tianyuan.easyui.cmdclient.console;
 
-import java.util.Map;
-import java.util.Scanner;
-
 import com.google.common.collect.ImmutableMap;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
 import com.tianyuan.easyui.cmdclient.login.LoginConsole;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.Map;
+import java.util.Scanner;
+
+@Slf4j
 public class CommandConsoleManager {
 
     private final Map<ConsoleCommand, CmdConsole> consoleMap;
@@ -17,27 +19,33 @@ public class CommandConsoleManager {
     
     public void cmdLoop() {
         Scanner scanner = new Scanner(System.in);
-        while (!Thread.interrupted()) {
+        boolean exit = false;
+        while (!exit) {
             System.out.println("Please enter a command to begin a new operation: ");
-            String cmd = scanner.next();
-            exec(cmd, scanner);
+            ConsoleCommand command = ConsoleCommand.getCommand(scanner.next());
+            if (!checkValidCmd(command)) {
+                continue;
+            }
+            if (ConsoleCommand.QUIT.equals(command)) {
+                System.out.println("Bye bye!");
+                return;
+            }
+            try {
+                exit = exec(command, scanner);
+            } catch (Exception e) {
+                log.error("Error happens when execute command:{}.", command, e);
+                exit = Thread.currentThread().isInterrupted();
+            }
         }
     }
     
-    private void exec(String cmd, Scanner scanner) {
-        ConsoleCommand command = ConsoleCommand.getCommand(cmd);
-        if (!checkValidCmd(command)) {
-            return;
-        }
-        if (ConsoleCommand.QUIT.equals(command)) {
-            Thread.currentThread().interrupt();
-            return;
-        }
+    private boolean exec(ConsoleCommand command, Scanner scanner) {
         CmdConsole cmdConsole = consoleMap.get(command);
         if (cmdConsole != null) {
             // begin a new loop in a specific console
-            cmdConsole.exec(scanner);
+            return cmdConsole.exec(scanner);
         }
+        return false;
     }
     
     private Map<ConsoleCommand, CmdConsole> initCmdConsoles(ChatContext chatContext) {

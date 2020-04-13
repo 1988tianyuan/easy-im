@@ -1,11 +1,5 @@
 package com.tianyuan.easyui.cmdclient.login;
 
-import static com.tianyuan.easyim.common.model.CommonConstant.*;
-
-import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.Scanner;
-
 import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.common.util.JsonUtil;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
@@ -13,6 +7,11 @@ import com.tianyuan.easyui.cmdclient.console.CmdConsole;
 import com.tianyuan.easyui.cmdclient.http.HttpRequestUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collections;
+import java.util.Scanner;
+
+import static com.tianyuan.easyim.common.model.CommonConstant.USER_NAME;
 
 @Slf4j
 public class LoginConsole implements CmdConsole {
@@ -24,9 +23,9 @@ public class LoginConsole implements CmdConsole {
     }
     
     @Override
-    public void exec(Scanner scanner) {
+    public boolean exec(Scanner scanner) {
         if (loginStatusCheck()) {
-            return;
+            return false;
         }
         System.out.println("Please enter username to login: ");
         String username = scanner.next();
@@ -39,6 +38,7 @@ public class LoginConsole implements CmdConsole {
             log.error("Error happens when login with username: {}", username, e);
             System.out.println("Failed to login, please try again.");
         }
+        return false;
     }
     
     private void login(String username) throws Exception {

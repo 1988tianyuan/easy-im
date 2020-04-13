@@ -21,4 +21,11 @@ public class ChatContext {
 	private volatile boolean login = false;
 	
 	private volatile String username;
+
+	public void shutdown() {
+		if (chatChannel != null && chatChannel.isOpen()) {
+			chatChannel.close();
+		}
+		chatServerConnector.shutdown();
+	}
 }
