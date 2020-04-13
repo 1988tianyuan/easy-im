@@ -2,7 +2,7 @@ package com.tianyuan.easyim.gateway.integration;
 
 import com.google.common.collect.Lists;
 import com.tianyuan.easyim.gateway.controller.request.LoginRequest;
-import com.tianyuan.easyim.gateway.controller.response.LoginResponse;
+import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.gateway.model.Server;
 import com.tianyuan.easyim.gateway.service.server.ServerCollector;
 import org.junit.Test;

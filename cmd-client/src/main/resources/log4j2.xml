@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration status="WARN" monitorinterval="20">
+    <Properties>
+        <Property name="baseDir">logs</Property>
+        <Property name="logFileName">easyim-cmd-client.log</Property>
+        <Property name="errorFileName">easyim-cmd-client-error.log</Property>
+    </Properties>
     <appenders>
         <Console name="CONSOLE" target="SYSTEM_OUT">
             <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %c{1.} %M - %msg%n%xEx{full}"/>
         </Console>
+        <RollingFile name="LOG" fileName="${baseDir}/${logFileName}"
+                     filePattern="${baseDir}/${logFileName}.%d{yyyyMMdd}.%i">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %c{1.} %M - %msg%n%xEx{full}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="50">
+                <Delete basePath="${baseDir}">
+                    <IfFileName glob="${logFileName}.*"/>
+                    <IfAccumulatedFileCount exceeds="50"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
+        <RollingFile name="ERROR" fileName="${baseDir}/${errorFileName}"
+                     filePattern="${baseDir}/${errorFileName}.%d{yyyyMMdd}.%i">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %c{1.} %M - %msg%n%xEx{full}"/>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+            <DefaultRolloverStrategy max="50">
+                <Delete basePath="${baseDir}">
+                    <IfFileName glob="${logFileName}.*"/>
+                    <IfAccumulatedFileCount exceeds="50"/>
+                </Delete>
+            </DefaultRolloverStrategy>
+        </RollingFile>
     </appenders>
 
     <loggers>
         <root level="DEBUG">
-            <appender-ref ref="CONSOLE" level="DEBUG"/>
+            <appender-ref ref="LOG" level="DEBUG"/>
+            <appender-ref ref="ERROR" level="ERROR"/>
         </root>
     </loggers>
 </configuration>

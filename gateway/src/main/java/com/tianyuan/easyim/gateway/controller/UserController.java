@@ -2,7 +2,7 @@ package com.tianyuan.easyim.gateway.controller;
 
 import com.tianyuan.easyim.gateway.application.LoginApp;
 import com.tianyuan.easyim.gateway.controller.request.LoginRequest;
-import com.tianyuan.easyim.gateway.controller.response.LoginResponse;
+import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.gateway.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
