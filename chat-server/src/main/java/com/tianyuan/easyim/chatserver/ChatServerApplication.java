@@ -22,12 +22,14 @@ public class ChatServerApplication {
 	
 	// TODO: configurable
 	private static final String zkConnectString = "10.34.130.38:2181";
+	private static final int serverPort = 8000;
+	private static final String serverHost = "localhost";
 	
 	public static void main(String[] args) throws InterruptedException {
 		// TODO: configurable
 		String serverId = UUID.randomUUID().toString();
 		NettyServer nettyServer = makeNettyServer(serverId);
-		ChannelFuture channelFuture = nettyServer.start(8000);
+		ChannelFuture channelFuture = nettyServer.start(serverPort);
 		shutdownHook(nettyServer, channelFuture);
 		channelFuture.sync();
 	}
@@ -36,24 +38,26 @@ public class ChatServerApplication {
 		// use zk register
 		CuratorFramework zkClient = CuratorFrameworkFactory.newClient(zkConnectString, new RetryForever(1000));
 		ServerRegister register = new ZkRegister(zkClient);
-		NettyServer.ServerHook zkHook = makeZkRegisterHook(zkClient);
-		NettyServer nettyServer = new NettyServer(serverId, register);
-		nettyServer.addServerHook(zkHook);
+		Runnable zkStartHook = makeZkStartHook(zkClient, register, serverId);
+		Runnable zkShutdownHook = makeZkShutdownHook(zkClient, register, serverId);
+		NettyServer nettyServer = new NettyServer(serverId);
+		nettyServer.addStartHook(zkStartHook);
+		nettyServer.addShutdownHook(zkShutdownHook);
 		return nettyServer;
 	}
 	
-	private static NettyServer.ServerHook makeZkRegisterHook(CuratorFramework zkClient) {
-		return new NettyServer.ServerHook() {
-			@Override
-			public void onStart() {
-				zkClient.start();
-			}
-			
-			@Override
-			public void onShutdown() {
-				if (CuratorFrameworkState.STARTED.equals(zkClient.getState())) {
-					zkClient.close();
-				}
+	private static Runnable makeZkStartHook(CuratorFramework zkClient, ServerRegister register, 
+		String serverId) {
+		return () -> {
+			zkClient.start();
+			register.register(serverHost, serverPort, serverId);
+		};
+	}
+	private static Runnable makeZkShutdownHook(CuratorFramework zkClient, ServerRegister register, String serverId) {
+		return () -> {
+			register.deregister(serverId);
+			if (CuratorFrameworkState.STARTED.equals(zkClient.getState())) {
+				zkClient.close();
 			}
 		};
 	}

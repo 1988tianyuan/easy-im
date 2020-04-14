@@ -7,4 +7,6 @@ package com.tianyuan.easyim.common.model;
 public class CommonConstant {
 	
 	public static final String USER_NAME = "username";
+	
+	public static final String SERVER_ID = "serverId";
 }
