@@ -33,7 +33,7 @@ public class NettyServer {
 	private final String serverId;
 	
 	// TODO: configurable
-	private static final String zkConnectString = "localhost:2181";
+	private static final String zkConnectString = "10.34.130.38:2181";
 	
 	public NettyServer(String serverId) {
 		this.zkClient = CuratorFrameworkFactory.newClient(zkConnectString, new RetryForever(1000));
@@ -58,7 +58,6 @@ public class NettyServer {
 				zkRegister.registerToZk("localhost", port, serverId);
 			} else {
 				log.error("Fail to listen port:{}", port);
-				shutdown();
 			}
 		});
 	}

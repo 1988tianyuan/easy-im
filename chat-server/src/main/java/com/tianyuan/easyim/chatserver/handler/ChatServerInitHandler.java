@@ -7,7 +7,9 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ChatServerInitHandler extends ChannelInitializer<NioSocketChannel> {
 
     @Override
