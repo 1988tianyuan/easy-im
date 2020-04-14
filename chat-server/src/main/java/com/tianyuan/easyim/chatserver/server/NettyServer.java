@@ -57,9 +57,9 @@ public class NettyServer {
 	}
 	
 	public void shutdown() {
+		shutdownHooks.forEach(Runnable::run);
 		workerGroup.shutdownGracefully();
 		bossGroup.shutdownGracefully();
-		shutdownHooks.forEach(Runnable::run);
 	}
 	
 	public void addStartHook(Runnable startHook) {
