@@ -4,5 +4,5 @@ import java.util.Scanner;
 
 public interface CmdConsole {
     
-    boolean exec(Scanner scanner);
+    void exec(Scanner scanner);
 }

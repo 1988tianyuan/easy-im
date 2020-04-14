@@ -2,8 +2,10 @@ package com.tianyuan.easyui.cmdclient.console;
 
 import com.google.common.collect.ImmutableMap;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
+import com.tianyuan.easyui.cmdclient.chat.ClientStatus;
 import com.tianyuan.easyui.cmdclient.login.LoginConsole;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -12,53 +14,45 @@ import java.util.Scanner;
 public class CommandConsoleManager {
 
     private final Map<ConsoleCommand, CmdConsole> consoleMap;
+
+    private final ChatContext chatContext;
     
     public CommandConsoleManager(ChatContext chatContext) {
         consoleMap = initCmdConsoles(chatContext);
+        this.chatContext = chatContext;
     }
     
     public void cmdLoop() {
+        System.out.println("Please enter these commands and begin your chat: " + ConsoleCommand.allValuesStr());
         Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
-        while (!exit) {
-            System.out.println("Please enter a command to begin a new operation: ");
-            ConsoleCommand command = ConsoleCommand.getCommand(scanner.next());
-            if (!checkValidCmd(command)) {
+        while (!chatContext.quited()) {
+            String input = scanner.next();
+            if (StringUtils.isBlank(input)) {
                 continue;
             }
-            if (ConsoleCommand.QUIT.equals(command)) {
-                System.out.println("Bye bye!");
-                return;
-            }
-            try {
-                exit = exec(command, scanner);
-            } catch (Exception e) {
-                log.error("Error happens when execute command:{}.", command, e);
-            }
+            exec(input, scanner);
         }
     }
-    
-    private boolean exec(ConsoleCommand command, Scanner scanner) {
+
+    private void exec(String input, Scanner scanner) {
+        ConsoleCommand command = ConsoleCommand.getCommand(input);
+        if (!chatContext.getStatus().isValid(command)) {
+            return;
+        }
+        if (ConsoleCommand.QUIT.equals(command)) {
+            chatContext.setStatus(ClientStatus.QUIT);
+            return;
+        }
         CmdConsole cmdConsole = consoleMap.get(command);
         if (cmdConsole != null) {
             // begin a new loop in a specific console
-            return cmdConsole.exec(scanner);
+            cmdConsole.exec(scanner);
         }
-        return false;
     }
     
     private Map<ConsoleCommand, CmdConsole> initCmdConsoles(ChatContext chatContext) {
         ImmutableMap.Builder<ConsoleCommand, CmdConsole> builder = ImmutableMap.builder();
         builder.put(ConsoleCommand.LOGIN, new LoginConsole(chatContext));
         return builder.build();
-    }
-
-    private boolean checkValidCmd(ConsoleCommand command) {
-        if (command == null) {
-            System.out.println("Your input command is invalid, " +
-                    "please check, just these commands are valid: " + ConsoleCommand.allValuesStr() + "\n");
-            return false;
-        }
-        return true;
     }
 }
