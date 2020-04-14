@@ -1,13 +1,11 @@
 package com.tianyuan.easyim.chatserver.server;
 
-import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.imps.CuratorFrameworkState;
-import org.apache.curator.retry.RetryForever;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.tianyuan.easyim.chatserver.handler.ChatServerInitHandler;
 import com.tianyuan.easyim.chatserver.handler.ChatServerInitializer;
-import com.tianyuan.easyim.chatserver.zk.ZkRegister;
+import com.tianyuan.easyim.chatserver.register.ServerRegister;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelOption;
@@ -26,19 +24,15 @@ public class NettyServer {
 	
 	private final NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 	
-	private final CuratorFramework zkClient;
-	
-	private final ZkRegister zkRegister;
+	private final ServerRegister register;
 	
 	private final String serverId;
 	
-	// TODO: configurable
-	private static final String zkConnectString = "10.34.130.38:2181";
+	private List<ServerHook> serverHooks = new ArrayList<>();
 	
-	public NettyServer(String serverId) {
-		this.zkClient = CuratorFrameworkFactory.newClient(zkConnectString, new RetryForever(1000));
+	public NettyServer(String serverId, ServerRegister register) {
 		this.serverId = serverId;
-		this.zkRegister = new ZkRegister(zkClient);
+		this.register = register;
 	}
 	
 	public ChannelFuture start(int port) {
@@ -53,9 +47,9 @@ public class NettyServer {
 		return serverBootstrap.bind(port).addListener(future -> {
 			if (future.isSuccess()) {
 				log.debug("Success to listen port:{}", port);
-				zkClient.start();
+				serverHooks.forEach(ServerHook::onStart);
 				// TODO: configurable
-				zkRegister.registerToZk("localhost", port, serverId);
+				register.register("localhost", port, serverId);
 			} else {
 				log.error("Fail to listen port:{}", port);
 			}
@@ -65,9 +59,17 @@ public class NettyServer {
 	public void shutdown() {
 		workerGroup.shutdownGracefully();
 		bossGroup.shutdownGracefully();
-		zkRegister.deregister(serverId);
-		if (CuratorFrameworkState.STARTED.equals(zkClient.getState())) {
-			zkClient.close();
-		}
+		register.deregister(serverId);
+		serverHooks.forEach(ServerHook::onShutdown);
+	}
+	
+	public void addServerHook(ServerHook serverHook) {
+		serverHooks.add(serverHook);
+	}
+	
+	public interface ServerHook {
+		void onStart();
+		
+		void onShutdown();
 	}
 }

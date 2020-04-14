@@ -1,26 +1,28 @@
-package com.tianyuan.easyim.chatserver.zk;
+package com.tianyuan.easyim.chatserver.register.zk;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.zookeeper.CreateMode;
 
 import com.tianyuan.easyim.chatserver.exception.ChatServerException;
+import com.tianyuan.easyim.chatserver.register.ServerRegister;
 
 /**
  * @author Liu Geng liu.geng@navercorp.com
  * @date 2020/4/13 17:28
  */
-public class ZkRegister {
-	
-	private final CuratorFramework zkClient;
+public class ZkRegister implements ServerRegister {
 	
 	// TODO: configurable
 	private final String serverListPath = "/easy-im/chat-servers";
+	
+	private final CuratorFramework zkClient;
 	
 	public ZkRegister(CuratorFramework zkClient) {
 		this.zkClient = zkClient;
 	}
 	
-	public void registerToZk(String serverHost, int serverPort, String serverId) {
+	@Override
+	public void register(String serverHost, int serverPort, String serverId) {
 		String registerPath = makePath(serverId);
 		try {
 			zkClient.create()
@@ -32,6 +34,7 @@ public class ZkRegister {
 		}
 	}
 	
+	@Override
 	public void deregister(String serverId) {
 		String registerPath = makePath(serverId);
 		try {
