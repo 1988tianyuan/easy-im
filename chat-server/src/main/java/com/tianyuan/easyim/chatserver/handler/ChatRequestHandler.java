@@ -1,14 +1,16 @@
-package com.tianyuan.easyim.server.handler;
+package com.tianyuan.easyim.chatserver.handler;
+
+import static com.tianyuan.easyim.common.model.IMMsg.*;
 
 import com.tianyuan.easyim.common.model.IMMsg;
 import com.tianyuan.easyim.common.protocal.ChatMsgUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-
-import static com.tianyuan.easyim.common.model.IMMsg.*;
+import lombok.extern.slf4j.Slf4j;
 
 @ChannelHandler.Sharable
+@Slf4j
 public class ChatRequestHandler extends SimpleChannelInboundHandler<ChatRequestMsg> {
 
     @Override
@@ -22,6 +24,19 @@ public class ChatRequestHandler extends SimpleChannelInboundHandler<ChatRequestM
                 .build();
         ctx.writeAndFlush(ChatMsgUtil.createBaseMsg(IMMsg.RequestType.ChatResponse, responseMsg));
         // TODO: handle chat request message
+    }
+    
+    
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        log.info("Success to create connection with remote address:{}, channelId is {}",
+            ctx.channel().remoteAddress(), ctx.channel().id());
+    }
+    
+    @Override
+    public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        log.info("Finish the connection with remote address:{}, channelId is {}",
+            ctx.channel().remoteAddress(), ctx.channel().id());
     }
 
     public static final ChatRequestHandler INSTANCE = new ChatRequestHandler();

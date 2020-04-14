@@ -10,7 +10,7 @@
 
     <loggers>
         <root level="DEBUG">
-            <appender-ref ref="CONSOLE" level="DEBUG"/>
+            <appender-ref ref="CONSOLE" level="INFO"/>
         </root>
     </loggers>
 </configuration>

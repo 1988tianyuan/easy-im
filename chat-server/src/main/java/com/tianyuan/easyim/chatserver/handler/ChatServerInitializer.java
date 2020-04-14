@@ -1,4 +1,4 @@
-package com.tianyuan.easyim.server.handler;
+package com.tianyuan.easyim.chatserver.handler;
 
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -9,7 +9,7 @@ public class ChatServerInitializer extends ChannelInitializer<NioServerSocketCha
 
     @Override
     protected void initChannel(NioServerSocketChannel nioServerSocketChannel) throws Exception {
-        log.debug("chat-server启动中");
+        log.info("chat-server启动中");
         // TODO: register to zk, and other possible init process.
     }
 }
