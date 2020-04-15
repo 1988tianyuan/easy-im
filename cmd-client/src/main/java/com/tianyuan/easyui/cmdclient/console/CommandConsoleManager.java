@@ -60,7 +60,7 @@ public class CommandConsoleManager {
             return;
         }
         if (ConsoleCommand.QUIT.equals(command)) {
-            chatContext.setStatus(ClientStatus.QUIT);
+            chatContext.setStatus(ClientStatus.QUITTED);
             return;
         }
         CmdConsole cmdConsole = consoleMap.get(command);

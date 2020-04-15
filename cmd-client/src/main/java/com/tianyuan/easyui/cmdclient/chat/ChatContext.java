@@ -31,6 +31,6 @@ public class ChatContext {
 	}
 
 	public boolean quited() {
-		return ClientStatus.QUIT.equals(status);
+		return ClientStatus.QUITTED.equals(status);
 	}
 }

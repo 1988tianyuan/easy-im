@@ -19,10 +19,16 @@ public class ClientStatusTest {
 		assertTrue(status.isValid(ConsoleCommand.QUIT));
 		assertFalse(status.validChatStatus());
 		
-		status = ClientStatus.LOGGED;
+		status = ClientStatus.LOGGED_IN;
 		assertTrue(status.isValid(ConsoleCommand.LOGOUT));
 		assertFalse(status.isValid(ConsoleCommand.LOGIN));
 		assertTrue(status.isValid(ConsoleCommand.QUIT));
 		assertTrue(status.validChatStatus());
+		
+		status = ClientStatus.QUITTED;
+		assertFalse(status.isValid(ConsoleCommand.LOGOUT));
+		assertFalse(status.isValid(ConsoleCommand.LOGIN));
+		assertFalse(status.isValid(ConsoleCommand.QUIT));
+		assertFalse(status.validChatStatus());
 	}
 }

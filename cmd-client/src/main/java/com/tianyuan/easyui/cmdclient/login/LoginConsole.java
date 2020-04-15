@@ -47,6 +47,6 @@ public class LoginConsole implements CmdConsole {
         // TODO: send connectCreateRequest msg with JWT to chat-server then check whether session is valid 
         chatContext.setChatChannel(channel);
         chatContext.setUsername(username);
-        chatContext.setStatus(ClientStatus.LOGGED);
+        chatContext.setStatus(ClientStatus.LOGGED_IN);
     }
 }

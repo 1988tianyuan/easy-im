@@ -1,7 +1,10 @@
 package com.tianyuan.easyui.cmdclient.console;
 
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.ImmutableMap;
@@ -33,6 +36,13 @@ public enum ConsoleCommand {
         return StringUtils.join(cmdMap.keySet(), " | ");
     }
     
+    public static String valuesStr(Set<ConsoleCommand> commands) {
+        if (CollectionUtils.isEmpty(commands)) {
+            return "no commands";
+        }
+        return StringUtils.join(commands.stream().map(ConsoleCommand::getValue).collect(Collectors.toList()), " | ");
+    }
+    
     public static boolean isSystemCmd(String input) {
         if (input.startsWith("&")) {
             if (cmdMap.containsKey(input)) {
@@ -41,5 +51,9 @@ public enum ConsoleCommand {
             System.out.println("Please use these commands to do operation: " + ConsoleCommand.allValuesStr());
         }
         return false;
+    }
+    
+    public String getValue() {
+        return value;
     }
 }
