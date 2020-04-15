@@ -17,8 +17,8 @@ public class ChatContext {
 	private Channel chatChannel;
 	
 	private ChatServerConnector chatServerConnector;
-	
-	private volatile boolean login = false;
+
+	private volatile ClientStatus status = ClientStatus.INIT;
 	
 	private volatile String username;
 
@@ -27,5 +27,10 @@ public class ChatContext {
 			chatChannel.close();
 		}
 		chatServerConnector.shutdown();
+		System.out.println("Bye bye!");
+	}
+
+	public boolean quited() {
+		return ClientStatus.QUITTED.equals(status);
 	}
 }
