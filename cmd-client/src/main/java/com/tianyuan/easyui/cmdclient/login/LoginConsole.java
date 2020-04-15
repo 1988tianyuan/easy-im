@@ -1,5 +1,10 @@
 package com.tianyuan.easyui.cmdclient.login;
 
+import static com.tianyuan.easyim.common.model.CommonConstant.*;
+
+import java.util.Collections;
+import java.util.Scanner;
+
 import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.common.util.JsonUtil;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
@@ -8,11 +13,6 @@ import com.tianyuan.easyui.cmdclient.console.CmdConsole;
 import com.tianyuan.easyui.cmdclient.http.HttpRequestUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.Collections;
-import java.util.Scanner;
-
-import static com.tianyuan.easyim.common.model.CommonConstant.USER_NAME;
 
 @Slf4j
 public class LoginConsole implements CmdConsole {
@@ -30,7 +30,7 @@ public class LoginConsole implements CmdConsole {
         try {
             login(username);
             log.debug("Success to login with username: {}", username);
-            System.out.println("Success to login, enter command '&chat' to begin a chat\n");
+            System.out.println("Success to login, enter use format ':targetUserName message' to begin a chat with targetUser");
             //TODO: begin a new chat loop to handle chat command
         } catch (Exception e) {
             log.error("Error happens when login with username: {}", username, e);

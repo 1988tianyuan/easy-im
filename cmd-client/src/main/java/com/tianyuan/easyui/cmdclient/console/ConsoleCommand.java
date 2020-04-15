@@ -1,13 +1,13 @@
 package com.tianyuan.easyui.cmdclient.console;
 
-import com.google.common.collect.ImmutableMap;
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.common.collect.ImmutableMap;
+
 public enum ConsoleCommand {
-    CHAT_WITH_USER("&chat"), LOGOUT("&logout"), LOGIN("&login"), QUIT("&quit"),
-    STOP_CHAT("&stop");
+    LOGOUT("&logout"), LOGIN("&login"), QUIT("&quit");
 
     private static Map<String, ConsoleCommand> cmdMap;
 
@@ -31,5 +31,15 @@ public enum ConsoleCommand {
     
     public static String allValuesStr() {
         return StringUtils.join(cmdMap.keySet(), " | ");
+    }
+    
+    public static boolean isSystemCmd(String input) {
+        if (input.startsWith("&")) {
+            if (cmdMap.containsKey(input)) {
+                return true;
+            }
+            System.out.println("Please use these commands to do operation: " + ConsoleCommand.allValuesStr());
+        }
+        return false;
     }
 }
