@@ -26,10 +26,10 @@ public abstract class ChatHandler {
 	
 	public abstract String parseMessage(String input);
 	
-	protected String parseGroup(String input, int groupIndex) {
+	protected String parseChatElement(String input, int index) {
 		Matcher matcher = chatType.getMsgPattern().matcher(input);
 		if (matcher.find()) {
-			return matcher.group(groupIndex);
+			return matcher.group(index);
 		}
 		return null;
 	}

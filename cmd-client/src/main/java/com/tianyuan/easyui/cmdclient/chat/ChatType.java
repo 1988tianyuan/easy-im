@@ -7,7 +7,10 @@ import java.util.regex.Pattern;
  * @date 2020/4/16 11:03
  */
 public enum ChatType {
-	P2P(Pattern.compile("^:(\\S*)\\s+(.*)$")), 
+	// use format ":targetUser message", example: ":liugeng hello!"
+	P2P(Pattern.compile("^:(\\S*)\\s+(.*)$")),
+	
+	// use format ">groupId message", example: ">group1 hello, group1 members!!"
 	GROUP(Pattern.compile("^>(\\S*)\\s+(.*)$"));
 	
 	private Pattern msgPattern;

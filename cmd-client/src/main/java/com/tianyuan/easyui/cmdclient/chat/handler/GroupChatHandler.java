@@ -20,11 +20,11 @@ public class GroupChatHandler extends ChatHandler {
 	
 	@Override
 	public String parseTarget(String input) {
-		return parseGroup(input, 1);
+		return parseChatElement(input, 1);
 	}
 	
 	@Override
 	public String parseMessage(String input) {
-		return parseGroup(input, 2);
+		return parseChatElement(input, 2);
 	}
 }
