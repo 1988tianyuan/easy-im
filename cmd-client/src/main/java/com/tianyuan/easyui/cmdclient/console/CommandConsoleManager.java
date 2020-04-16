@@ -7,8 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.ImmutableMap;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
-import com.tianyuan.easyui.cmdclient.chat.ChatUtil;
+import com.tianyuan.easyui.cmdclient.chat.ChatType;
 import com.tianyuan.easyui.cmdclient.chat.ClientStatus;
+import com.tianyuan.easyui.cmdclient.chat.handler.ChatHandler;
+import com.tianyuan.easyui.cmdclient.chat.handler.GroupChatHandler;
+import com.tianyuan.easyui.cmdclient.chat.handler.P2PChatHandler;
 import com.tianyuan.easyui.cmdclient.login.LoginConsole;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,11 +19,14 @@ import lombok.extern.slf4j.Slf4j;
 public class CommandConsoleManager {
 
     private final Map<ConsoleCommand, CmdConsole> consoleMap;
+    
+    private final Map<ChatType, ChatHandler> chatMsgHandlerMap;
 
     private final ChatContext chatContext;
     
     public CommandConsoleManager(ChatContext chatContext) {
         consoleMap = initCmdConsoles(chatContext);
+        chatMsgHandlerMap = initChatHandlers(chatContext);
         this.chatContext = chatContext;
     }
     
@@ -37,8 +43,8 @@ public class CommandConsoleManager {
                 if (ConsoleCommand.isSystemCmd(input)) {
                     // begin a system command console
                     execCmd(input, scanner);
-                } else if (ChatUtil.isValidChat(input)) {
-                    // begin to send a chat message
+                } else {
+                    // begin to send chat message
                     execChatMsg(input);
                 }
             } catch (Exception e) {
@@ -48,10 +54,10 @@ public class CommandConsoleManager {
     }
     
     private void execChatMsg(String input) {
-    	if (!chatContext.getStatus().validChatStatus()) {
-    		return;
-		}
-        // TODO
+        ChatType chatType = ChatType.getChatType(input);
+        if (chatType != null && chatContext.getStatus().validChatStatus()) {
+            chatMsgHandlerMap.get(chatType).execMsg(input);
+        }
     }
 
     private void execCmd(String input, Scanner scanner) {
@@ -73,6 +79,13 @@ public class CommandConsoleManager {
     private Map<ConsoleCommand, CmdConsole> initCmdConsoles(ChatContext chatContext) {
         ImmutableMap.Builder<ConsoleCommand, CmdConsole> builder = ImmutableMap.builder();
         builder.put(ConsoleCommand.LOGIN, new LoginConsole(chatContext));
+        return builder.build();
+    }
+    
+    private Map<ChatType, ChatHandler> initChatHandlers(ChatContext chatContext) {
+        ImmutableMap.Builder<ChatType, ChatHandler> builder = ImmutableMap.builder();
+        builder.put(ChatType.P2P, new P2PChatHandler(chatContext));
+        builder.put(ChatType.GROUP, new GroupChatHandler(chatContext));
         return builder.build();
     }
 }
