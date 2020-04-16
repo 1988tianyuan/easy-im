@@ -12,6 +12,7 @@ import com.tianyuan.easyui.cmdclient.console.ConsoleCommand;
 public enum ClientStatus {
     INIT(Sets.newHashSet(LOGIN, QUIT)),
     QUITTED(Collections.emptySet()),
+    LOGGING_IN(Sets.newHashSet(QUIT)),
     LOGGED_IN(Sets.newHashSet(LOGOUT, QUIT)) {
         @Override
         public boolean validChatStatus() {
