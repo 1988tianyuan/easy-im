@@ -21,7 +21,7 @@ public class ChatServerConnector {
         eventLoopGroup = new NioEventLoopGroup();
     }
     
-    public Channel start(String hostAndPort, String username) throws Exception {
+    public static Channel start(String hostAndPort, String username, ChatContext chatContext) throws Exception {
         String host = StringUtils.split(hostAndPort, ":")[0];
         int port = Integer.parseInt(StringUtils.split(hostAndPort, ":")[1]);
         Bootstrap bootstrap = new Bootstrap().group(eventLoopGroup)
