@@ -43,6 +43,7 @@ public class LoginConsole implements CmdConsole {
         LoginResponse loginResponse = sendLoginRequestToGateway(username);
         Channel channel = ChatServerConnector.start(loginResponse.getServerAddress(), username, chatContext);
         sendCreateSessionRequest(channel, loginResponse, username);
+        chatContext.setChatChannel(channel);
         chatContext.setStatus(ClientStatus.LOGGING_IN);
         System.out.println("logging in, please wait......");
     }
@@ -61,9 +62,7 @@ public class LoginConsole implements CmdConsole {
             .setJwt(loginResponse.getToken())
             .build());
         channel.writeAndFlush(requestMsg).addListener(future -> {
-            if (future.isSuccess()) {
-                chatContext.setChatChannel(channel);
-            } else {
+            if (!future.isSuccess()) {
                 System.out.println("Failed to login, please try again.");
                 channel.close();
                 chatContext.setChatChannel(null);
