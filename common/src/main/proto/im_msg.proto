@@ -11,7 +11,7 @@ message BaseRequestMsg {
 
 enum RequestType {
     ChatRequest = 0;
-    CreateConnect = 1;
+    CreateSession = 1;
     ChatResponse = 2;
 }
 
@@ -23,9 +23,14 @@ message ChatRequestMsg {
     bool redirect = 5;
 }
 
-message ConnectCreateRequestMsg {
+message SessionCreateRequestMsg {
     string username = 1;
     string jwt = 2;
+}
+
+message SessionCreateResponseMsg {
+    string sessionId = 1;
+    bool success = 2;
 }
 
 message ChatResponseMsg {

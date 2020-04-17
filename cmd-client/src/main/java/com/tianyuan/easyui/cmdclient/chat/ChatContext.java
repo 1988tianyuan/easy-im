@@ -1,6 +1,9 @@
 package com.tianyuan.easyui.cmdclient.chat;
 
+import static com.tianyuan.easyui.cmdclient.chat.ClientStatus.*;
+
 import io.netty.channel.Channel;
+import io.netty.channel.nio.NioEventLoopGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,21 +19,29 @@ public class ChatContext {
 	
 	private Channel chatChannel;
 	
-	private ChatServerConnector chatServerConnector;
+	private NioEventLoopGroup eventLoopGroup;
 
-	private volatile ClientStatus status = ClientStatus.INIT;
+	private volatile ClientStatus status;
 	
 	private volatile String username;
+	
+	private String sessionId;
 
 	public void shutdown() {
 		if (chatChannel != null && chatChannel.isOpen()) {
 			chatChannel.close();
 		}
-		chatServerConnector.shutdown();
+		eventLoopGroup.shutdownGracefully();
 		System.out.println("Bye bye!");
 	}
 
 	public boolean quited() {
 		return ClientStatus.QUITTED.equals(status);
+	}
+	
+	public void init() {
+		// TODO: configurable
+		this.eventLoopGroup = new NioEventLoopGroup();
+		this.status = INIT;
 	}
 }

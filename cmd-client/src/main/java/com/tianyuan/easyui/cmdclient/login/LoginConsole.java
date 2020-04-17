@@ -7,8 +7,10 @@ import java.util.Scanner;
 
 import com.tianyuan.easyim.common.model.IMMsg;
 import com.tianyuan.easyim.common.model.LoginResponse;
+import com.tianyuan.easyim.common.protocal.ChatMsgUtil;
 import com.tianyuan.easyim.common.util.JsonUtil;
 import com.tianyuan.easyui.cmdclient.chat.ChatContext;
+import com.tianyuan.easyui.cmdclient.chat.ChatServerConnector;
 import com.tianyuan.easyui.cmdclient.chat.ClientStatus;
 import com.tianyuan.easyui.cmdclient.console.CmdConsole;
 import com.tianyuan.easyui.cmdclient.http.HttpRequestUtil;
@@ -39,8 +41,8 @@ public class LoginConsole implements CmdConsole {
     private void login(String username) throws Exception {
         chatContext.setUsername(username);
         LoginResponse loginResponse = sendLoginRequestToGateway(username);
-        Channel channel = chatContext.getChatServerConnector().start(loginResponse.getServerAddress(), username);
-        sendConnectCreateRequest(channel, loginResponse, username);
+        Channel channel = ChatServerConnector.start(loginResponse.getServerAddress(), username, chatContext);
+        sendCreateSessionRequest(channel, loginResponse, username);
         chatContext.setStatus(ClientStatus.LOGGING_IN);
         System.out.println("logging in, please wait......");
     }
@@ -52,19 +54,20 @@ public class LoginConsole implements CmdConsole {
         return JsonUtil.fromJson(loginResp, LoginResponse.class);
     }
     
-    private void sendConnectCreateRequest(Channel channel, LoginResponse loginResponse, String username) throws Exception {
-        channel.writeAndFlush(IMMsg.SessionCreateRequestMsg.newBuilder()
+    private void sendCreateSessionRequest(Channel channel, LoginResponse loginResponse, String username) throws Exception {
+        IMMsg.BaseRequestMsg requestMsg = ChatMsgUtil.createBaseMsg(IMMsg.RequestType.CreateSession, 
+            IMMsg.SessionCreateRequestMsg.newBuilder()
             .setUsername(username)
             .setJwt(loginResponse.getToken())
-            .build()
-        ).addListener(future -> {
+            .build());
+        channel.writeAndFlush(requestMsg).addListener(future -> {
             if (future.isSuccess()) {
                 chatContext.setChatChannel(channel);
-                log.debug("Success to login with username: {}", username);
-                System.out.println("Success to login, enter use format ':targetUserName message' to begin a chat with targetUser");
             } else {
-                channel.close();
                 System.out.println("Failed to login, please try again.");
+                channel.close();
+                chatContext.setChatChannel(null);
+                chatContext.setStatus(ClientStatus.INIT);
             }
         });
     }
