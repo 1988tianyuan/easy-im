@@ -1,17 +1,17 @@
 package com.tianyuan.easyim.common.protocal;
 
+import static com.tianyuan.easyim.common.model.IMMsg.*;
+import static com.tianyuan.easyim.common.model.IMMsg.RequestType.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.google.protobuf.Any;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.google.protobuf.Message;
 import lombok.NonNull;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.tianyuan.easyim.common.model.IMMsg.*;
-import static com.tianyuan.easyim.common.model.IMMsg.RequestType.*;
 
 public class ChatMsgUtil {
 
@@ -21,7 +21,7 @@ public class ChatMsgUtil {
         Map<RequestType, Class<? extends Message>> map = new HashMap<>();
         map.put(ChatRequest, ChatRequestMsg.class);
         map.put(ChatResponse, ChatResponseMsg.class);
-        map.put(CreateConnect, ConnectCreateRequestMsg.class);
+        map.put(CreateSession, SessionCreateRequestMsg.class);
         requestMsgMap = Maps.immutableEnumMap(map);
     }
 
@@ -54,9 +54,9 @@ public class ChatMsgUtil {
                 Preconditions.checkArgument(msg instanceof ChatResponseMsg,
                         "When RequestType is ChatResponse, msg should be ChatRequestMsg!");
                 break;
-            case CreateConnect:
-                Preconditions.checkArgument(msg instanceof ConnectCreateRequestMsg,
-                        "When RequestType is CreateConnect, msg should be ConnectCreateRequestMsg!");
+            case CreateSession:
+                Preconditions.checkArgument(msg instanceof SessionCreateRequestMsg,
+                        "When RequestType is CreateSession, msg should be SessionCreateResponseMsg!");
                 break;
             default:
                 throw new IllegalArgumentException("Unknown requestType:" + requestType + ", please confirm.");
