@@ -1,10 +1,5 @@
 package com.tianyuan.easyui.cmdclient.login;
 
-import static com.tianyuan.easyim.common.model.CommonConstant.*;
-
-import java.util.Collections;
-import java.util.Scanner;
-
 import com.tianyuan.easyim.common.model.IMMsg;
 import com.tianyuan.easyim.common.model.LoginResponse;
 import com.tianyuan.easyim.common.protocal.ChatMsgUtil;
@@ -16,6 +11,11 @@ import com.tianyuan.easyui.cmdclient.console.CmdConsole;
 import com.tianyuan.easyui.cmdclient.http.HttpRequestUtil;
 import io.netty.channel.Channel;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Collections;
+import java.util.Scanner;
+
+import static com.tianyuan.easyim.common.model.CommonConstant.USER_NAME;
 
 @Slf4j
 public class LoginConsole implements CmdConsole {
@@ -56,7 +56,7 @@ public class LoginConsole implements CmdConsole {
     }
     
     private void sendCreateSessionRequest(Channel channel, LoginResponse loginResponse, String username) throws Exception {
-        IMMsg.BaseRequestMsg requestMsg = ChatMsgUtil.createBaseMsg(IMMsg.RequestType.CreateSession, 
+        IMMsg.BaseRequestMsg requestMsg = ChatMsgUtil.createBaseMsg(IMMsg.RequestType.CreateSessionRequest, 
             IMMsg.SessionCreateRequestMsg.newBuilder()
             .setUsername(username)
             .setJwt(loginResponse.getToken())

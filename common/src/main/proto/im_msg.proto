@@ -11,8 +11,9 @@ message BaseRequestMsg {
 
 enum RequestType {
     ChatRequest = 0;
-    CreateSession = 1;
-    ChatResponse = 2;
+    CreateSessionRequest = 1;
+    CreateSessionResponse = 2;
+    ChatResponse = 3;
 }
 
 message ChatRequestMsg {
