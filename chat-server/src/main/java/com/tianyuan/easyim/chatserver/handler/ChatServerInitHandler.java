@@ -1,5 +1,6 @@
 package com.tianyuan.easyim.chatserver.handler;
 
+import com.tianyuan.easyim.chatserver.config.ChatServerConfigs;
 import com.tianyuan.easyim.common.protocal.ChatDecoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
@@ -11,7 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ChatServerInitHandler extends ChannelInitializer<NioSocketChannel> {
-
+    
+    private ChatServerConfigs configs;
+    
+    public ChatServerInitHandler(ChatServerConfigs configs) {
+        this.configs = configs;
+    }
+    
     @Override
     protected void initChannel(NioSocketChannel channel) throws Exception {
         ChannelPipeline pipeline = channel.pipeline();
@@ -25,5 +32,7 @@ public class ChatServerInitHandler extends ChannelInitializer<NioSocketChannel> 
         pipeline.addLast(new ProtobufEncoder());
         // chat-server chat request handler
         pipeline.addLast(ChatRequestHandler.INSTANCE);
+        SessionCreateRequestHandler sessionCreateRequestHandler = new SessionCreateRequestHandler(configs);
+        pipeline.addLast(sessionCreateRequestHandler);
     }
 }
