@@ -1,0 +1,8 @@
+server:
+
+token:
+
+register:
+  zkConnectString: 10.34.130.38:2181
+      
+  

@@ -14,6 +14,7 @@ enum RequestType {
     CreateSessionRequest = 1;
     CreateSessionResponse = 2;
     ChatResponse = 3;
+    FinishSessionRequest = 4;
 }
 
 message ChatRequestMsg {
@@ -32,6 +33,10 @@ message SessionCreateRequestMsg {
 message SessionCreateResponseMsg {
     string sessionId = 1;
     bool success = 2;
+}
+
+message FinishSessionRequestMsg {
+    string sessionId = 1;
 }
 
 message ChatResponseMsg {
