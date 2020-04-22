@@ -44,4 +44,12 @@ public class ChatContext {
 		this.eventLoopGroup = new NioEventLoopGroup();
 		this.status = INIT;
 	}
+	
+	public void logoutClear() {
+		sessionId = null;
+		username = null;
+		chatChannel.close();	//TODO: use connection pool to re-use channel
+		chatChannel = null;
+		status = ClientStatus.INIT;
+	}
 }
