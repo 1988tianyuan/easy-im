@@ -32,7 +32,14 @@ public class ChatServerInitHandler extends ChannelInitializer<NioSocketChannel> 
         pipeline.addLast(new ProtobufEncoder());
         // chat-server chat request handler
         pipeline.addLast(ChatRequestHandler.INSTANCE);
+        // init chat-server session handlers
+        initSessionHandler(pipeline);
+    }
+    
+    private void initSessionHandler(ChannelPipeline pipeline) throws Exception {
         SessionCreateRequestHandler sessionCreateRequestHandler = new SessionCreateRequestHandler(configs);
+        SessionFinishRequestHandler sessionFinishRequestHandler = new SessionFinishRequestHandler(configs);
         pipeline.addLast(sessionCreateRequestHandler);
+        pipeline.addLast(sessionFinishRequestHandler);
     }
 }

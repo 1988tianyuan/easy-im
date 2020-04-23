@@ -2,8 +2,6 @@ package com.tianyuan.easyim.chatserver;
 
 import static com.tianyuan.easyim.chatserver.config.ConfigUtil.*;
 
-import java.util.UUID;
-
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.imps.CuratorFrameworkState;
@@ -14,6 +12,7 @@ import com.tianyuan.easyim.chatserver.config.ChatServerConfigs;
 import com.tianyuan.easyim.chatserver.register.ServerRegister;
 import com.tianyuan.easyim.chatserver.register.zk.ZkRegister;
 import com.tianyuan.easyim.chatserver.server.NettyServer;
+import com.tianyuan.easyim.chatserver.session.SessionManagerHolder;
 import io.netty.channel.ChannelFuture;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,10 +26,10 @@ public class ChatServerApplication {
 	public static void main(String[] args) throws Exception {
 		ChatServerConfigs configs = loadConfigs(args);
 		// TODO: configurable
-		String serverId = UUID.randomUUID().toString();
+		String serverId = configs.getServer().getServerId();
 		NettyServer nettyServer = makeNettyServer(serverId, configs);
 		ChannelFuture channelFuture = nettyServer.start();
-		shutdownHook(nettyServer, channelFuture);
+		shutdownHook(nettyServer, channelFuture, configs);
 		channelFuture.sync();
 	}
 	
@@ -65,13 +64,16 @@ public class ChatServerApplication {
 		};
 	}
 	
-	private static void shutdownHook(NettyServer nettyServer, ChannelFuture channelFuture) {
+	private static void shutdownHook(NettyServer nettyServer, ChannelFuture channelFuture,
+		ChatServerConfigs configs) {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
 				channelFuture.channel().close().sync();
 			} catch (InterruptedException e) {
 				// nothing;
 			}
+			SessionManagerHolder.getSessionManager(configs).clearAllSessions();
+			System.out.println("清理了session");
 			nettyServer.shutdown();
 		}));
 	}

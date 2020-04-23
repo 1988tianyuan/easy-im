@@ -24,11 +24,16 @@ public class ZkRegister implements ServerRegister {
 	@Override
 	public void register(String serverHost, int serverPort, String serverId) {
 		String registerPath = makePath(serverId);
+		byte[] data = (serverHost + ":" + serverPort).getBytes();
 		try {
-			zkClient.create()
-				.creatingParentsIfNeeded()
-				.withMode(CreateMode.EPHEMERAL)
-				.forPath(registerPath, (serverHost + ":" + serverPort).getBytes());
+			if (zkClient.checkExists().forPath(registerPath) == null) {
+				zkClient.create()
+					.creatingParentsIfNeeded()
+					.withMode(CreateMode.EPHEMERAL)
+					.forPath(registerPath, data);
+			} else {
+				zkClient.setData().forPath(registerPath, data);
+			}
 		} catch (Exception e) {
 			throw new ChatServerException("Fail to register current chat-server to path:" + registerPath, e);
 		}
