@@ -25,7 +25,6 @@ public class ChatServerApplication {
 	
 	public static void main(String[] args) throws Exception {
 		ChatServerConfigs configs = loadConfigs(args);
-		// TODO: configurable
 		String serverId = configs.getServer().getServerId();
 		NettyServer nettyServer = makeNettyServer(serverId, configs);
 		ChannelFuture channelFuture = nettyServer.start();
@@ -73,7 +72,6 @@ public class ChatServerApplication {
 				// nothing;
 			}
 			SessionManagerHolder.getSessionManager(configs).clearAllSessions();
-			System.out.println("清理了session");
 			nettyServer.shutdown();
 		}));
 	}
