@@ -12,8 +12,8 @@ import com.tianyuan.easyui.cmdclient.chat.ClientStatus;
 import com.tianyuan.easyui.cmdclient.chat.handler.ChatHandler;
 import com.tianyuan.easyui.cmdclient.chat.handler.GroupChatHandler;
 import com.tianyuan.easyui.cmdclient.chat.handler.P2PChatHandler;
-import com.tianyuan.easyui.cmdclient.login.LoginConsole;
-import com.tianyuan.easyui.cmdclient.login.LogoutConsole;
+import com.tianyuan.easyui.cmdclient.console.login.LoginConsole;
+import com.tianyuan.easyui.cmdclient.console.login.LogoutConsole;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -81,6 +81,7 @@ public class CommandConsoleManager {
         ImmutableMap.Builder<ConsoleCommand, CmdConsole> builder = ImmutableMap.builder();
         builder.put(ConsoleCommand.LOGIN, new LoginConsole(chatContext));
         builder.put(ConsoleCommand.LOGOUT, new LogoutConsole(chatContext));
+        builder.put(ConsoleCommand.ONLINE_USER_LIST, new GetUserListConsole(chatContext));
         return builder.build();
     }
     

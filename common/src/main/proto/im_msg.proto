@@ -15,6 +15,7 @@ enum RequestType {
     CreateSessionResponse = 2;
     ChatResponse = 3;
     FinishSessionRequest = 4;
+    GetOnlineUsers = 5;
 }
 
 message ChatRequestMsg {
@@ -44,6 +45,14 @@ message ChatResponseMsg {
     string username = 2;
     string targetUsername = 3;
     bool redirect = 4;
+}
+
+message GetOnlineUsersRequestMsg {
+    string sessionId = 1;
+}
+
+message GetOnlineUsersResponseMsg {
+    repeated string userList = 2;
 }
 
 

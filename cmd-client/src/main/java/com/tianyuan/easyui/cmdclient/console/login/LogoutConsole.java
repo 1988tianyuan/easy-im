@@ -1,4 +1,4 @@
-package com.tianyuan.easyui.cmdclient.login;
+package com.tianyuan.easyui.cmdclient.console.login;
 
 import java.util.Scanner;
 

@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.google.common.collect.ImmutableMap;
 
 public enum ConsoleCommand {
-    LOGOUT("&logout"), LOGIN("&login"), QUIT("&quit");
+    LOGOUT("&logout"), LOGIN("&login"), QUIT("&quit"), ONLINE_USER_LIST("&users");
 
     private static Map<String, ConsoleCommand> cmdMap;
 
