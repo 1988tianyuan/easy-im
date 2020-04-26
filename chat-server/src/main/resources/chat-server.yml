@@ -1,4 +1,6 @@
 server:
+  port: 8000
+  serverId: chat-server-1
 
 token:
 

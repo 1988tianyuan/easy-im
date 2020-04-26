@@ -1,5 +1,7 @@
 package com.tianyuan.easyim.chatserver.config;
 
+import java.util.UUID;
+
 import lombok.Data;
 
 /**
@@ -19,10 +21,16 @@ public class ChatServerConfigs {
 	public static class ServerConfig {
 		private int port = 8000;
 		private String host = "0.0.0.0";
+		private String serverId = UUID.randomUUID().toString();
 		
 		public void setPort(int port) {
 			if (port != 0) {
 				this.port = port;
+			}
+		}
+		public void setServerId(String serverId) {
+			if (serverId != null) {
+				this.serverId = serverId;
 			}
 		}
 	}
