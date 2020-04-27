@@ -29,6 +29,7 @@ public class ChatClientInitializer extends ChannelInitializer<NioSocketChannel> 
         // protobuf tcp package encoder
         pipeline.addLast(new ProtobufEncoder());
         pipeline.addLast(new SessionCreateResponseHandler(chatContext));
+        pipeline.addLast(new GetUserListResponseHandler());
         pipeline.addLast(ChatClientResponseHandler.INSTANCE);
     }
 }
