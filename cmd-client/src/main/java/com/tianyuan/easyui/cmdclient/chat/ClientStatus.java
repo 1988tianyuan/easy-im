@@ -13,7 +13,7 @@ public enum ClientStatus {
     INIT(Sets.newHashSet(LOGIN, QUIT)),
     QUITTED(Collections.emptySet()),
     LOGGING_IN(Sets.newHashSet(QUIT)),
-    LOGGED_IN(Sets.newHashSet(LOGOUT, QUIT)) {
+    LOGGED_IN(Sets.newHashSet(LOGOUT, QUIT, ONLINE_USER_LIST)) {
         @Override
         public boolean validChatStatus() {
             return true;
