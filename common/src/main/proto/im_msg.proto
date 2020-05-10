@@ -16,6 +16,7 @@ enum RequestType {
     ChatResponse = 3;
     FinishSessionRequest = 4;
     GetOnlineUsers = 5;
+    OnlineUsersResponse = 6;
 }
 
 message ChatRequestMsg {
@@ -52,7 +53,11 @@ message GetOnlineUsersRequestMsg {
 }
 
 message GetOnlineUsersResponseMsg {
-    repeated string userList = 2;
+    repeated UserMsg user = 1;
+}
+
+message UserMsg {
+	string username = 1;
 }
 
 

@@ -1,5 +1,7 @@
 package com.tianyuan.easyim.chatserver.session;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -38,6 +40,11 @@ public class DefaultInMemorySessionManager implements SessionManager {
 	@Override
 	public void clearAllSessions() {
 		sessionMap.clear();
+	}
+	
+	@Override
+	public List<Session> getAllSessions() {
+		return new ArrayList<>(sessionMap.values());
 	}
 	
 	private Session createNewSession(String username) {

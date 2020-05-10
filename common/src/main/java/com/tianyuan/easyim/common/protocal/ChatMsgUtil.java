@@ -25,6 +25,7 @@ public class ChatMsgUtil {
         map.put(CreateSessionResponse, SessionCreateResponseMsg.class);
         map.put(FinishSessionRequest, FinishSessionRequestMsg.class);
         map.put(GetOnlineUsers, GetOnlineUsersRequestMsg.class);
+        map.put(OnlineUsersResponse, GetOnlineUsersResponseMsg.class);
         requestMsgMap = Maps.immutableEnumMap(map);
     }
 
@@ -72,6 +73,10 @@ public class ChatMsgUtil {
             case GetOnlineUsers:
                 Preconditions.checkArgument(msg instanceof GetOnlineUsersRequestMsg,
                     "When RequestType is GetOnlineUsers, msg should be GetOnlineUsersRequestMsg!");
+                break;
+            case OnlineUsersResponse:
+                Preconditions.checkArgument(msg instanceof GetOnlineUsersResponseMsg,
+                    "When RequestType is OnlineUsersResponse, msg should be GetOnlineUsersResponseMsg!");
                 break;
             default:
                 throw new IllegalArgumentException("Unknown requestType:" + requestType + ", please confirm.");

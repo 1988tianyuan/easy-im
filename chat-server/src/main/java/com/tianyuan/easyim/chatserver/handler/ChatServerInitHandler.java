@@ -32,6 +32,7 @@ public class ChatServerInitHandler extends ChannelInitializer<NioSocketChannel> 
         pipeline.addLast(new ProtobufEncoder());
         // chat-server chat request handler
         pipeline.addLast(ChatRequestHandler.INSTANCE);
+        pipeline.addLast(new GetUserListRequestHandler(configs));
         // init chat-server session handlers
         initSessionHandler(pipeline);
     }
